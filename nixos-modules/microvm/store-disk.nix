@@ -96,16 +96,5 @@ in
           )
       '';
     })
-
-    (lib.mkIf (config.microvm.guest.enable && config.nix.enable) {
-      microvm.kernelParams = [
-        "regInfo=${regInfo}/registration"
-      ];
-      boot.postBootCommands = ''
-        if [[ "$(cat /proc/cmdline)" =~ regInfo=([^ ]*) ]]; then
-          ${config.nix.package.out}/bin/nix-store --load-db < ''${BASH_REMATCH[1]}
-        fi
-      '';
-    })
   ];
 }
